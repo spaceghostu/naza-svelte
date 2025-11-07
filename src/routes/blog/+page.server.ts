@@ -20,7 +20,8 @@ export const load: PageServerLoad = async () => {
     });
 
     return {
-      posts: response.data
+      posts: response.data || [],
+      error: undefined
     };
   } catch (error) {
     console.error('Error fetching blog posts:', error);

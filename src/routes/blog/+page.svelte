@@ -18,22 +18,32 @@
         <li>Make sure the content type is publicly accessible in Settings → Users & Permissions → Roles → Public</li>
       </ol>
     </div>
-  {:else if data.posts.length === 0}
+  {:else if !data.posts || data.posts.length === 0}
     <p class="empty">No blog posts found. Create some content in your Strapi CMS!</p>
   {:else}
     <div class="posts">
       {#each data.posts as post}
-        <article class="post-card">
-          <h2>
-            <a href="/blog/{post.attributes.slug}">{post.attributes.title}</a>
-          </h2>
-          <div class="excerpt">
-            {post.attributes.content?.substring(0, 200)}...
-          </div>
-          <div class="meta">
-            Published: {new Date(post.attributes.publishedAt).toLocaleDateString()}
-          </div>
-        </article>
+        {#if post?.attributes}
+          <article class="post-card">
+            <h2>
+              {#if post.attributes.slug}
+                <a href="/blog/{post.attributes.slug}">{post.attributes.title || 'Untitled'}</a>
+              {:else}
+                {post.attributes.title || 'Untitled'}
+              {/if}
+            </h2>
+            {#if post.attributes.content}
+              <div class="excerpt">
+                {post.attributes.content.substring(0, 200)}{post.attributes.content.length > 200 ? '...' : ''}
+              </div>
+            {/if}
+            {#if post.attributes.publishedAt}
+              <div class="meta">
+                Published: {new Date(post.attributes.publishedAt).toLocaleDateString()}
+              </div>
+            {/if}
+          </article>
+        {/if}
       {/each}
     </div>
   {/if}
