@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: naza-svelte
+    env: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: node build/index.js
+    envVars:
+      - key: NODE_VERSION
+        value: 18.20.0
+      - key: ORIGIN
+        value: https://naza-svelte.onrender.com
+      - key: PUBLIC_STRAPI_URL
+        value: https://your-strapi-url.onrender.com
+      - key: PUBLIC_STRAPI_API_TOKEN
+        value: ""
